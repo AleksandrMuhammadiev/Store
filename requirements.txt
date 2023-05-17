@@ -1,0 +1,11 @@
+asgiref==3.6.0
+defusedxml==0.7.1
+Django==4.2.1
+django-colorfield==0.8.0
+django-filter==23.2
+django-inline-svg==0.1.1
+django-jazzmin==2.6.0
+django-svg-image-form-field==1.0.1
+Pillow==9.5.0
+sqlparse==0.4.4
+tzdata==2023.3

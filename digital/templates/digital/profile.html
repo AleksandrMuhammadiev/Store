@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block baner %}
+{% endblock baner %}
+
+
+{% block main %}
+
+
+<main>
+    <div class="content_user">
+        <div class="user container">
+            <h3 class="user_room">Личный кабинет</h3>
+            <div class="user_block">
+                <div class="user_img">
+                    <img class="user_img-img" src="{{ profile.get_photo }}" alt="">
+                    <div class="user_name">
+                        <p>{{ profile.user.username }}</p>
+                    </div>
+                </div>
+                <div class="user_info">
+                    <h2 class="user_title">Личные данные</h2>
+                    <ul class="lis__user_info">
+                        <li class="list_user"><p>Имя:</p> <span>{{ profile.user.first_name }}</span></li>
+                        <li class="list_user"><p>Фамилия:</p> <span>{{ profile.user.last_name }}</span></li>
+                        <li class="list_user"><p>Телефон:</p> <span>{{ profile.phone_number }}</span></li>
+                        <li class="list_user"><p>E-mail:</p> <span>{{ profile.user.email }}</span></li>
+
+                    </ul>
+                </div>
+            </div>
+            <a href="{% url 'chg_profile_view' %}" class="btn btn_profile">Редактировать</a>
+        </div>
+    </div>
+
+
+    <div class="content_order">
+        <div class="my_orders">
+            <h3>Мои заказы</h3> <img src="{% static 'digital/image/icons/errow_right.svg' %}" alt="" class="errow_down">
+        </div>
+
+        <ul class="list_orders ">
+            {% include 'digital/components/_order_list.html' %}
+        </ul>
+
+
+    </div>
+
+    <div class="content_connect">
+        <p class="content_top_text">Привязка к аккаунтам соцсетей</p>
+        <p class="content_midle_text">Вы можете связать свой профиль с профилями в социальных сетях и сервисах:</p>
+
+        {% include 'digital/components/_mail_list.html' %}
+
+    </div>
+</main>
+
+{% endblock main %}
+
+
+
+{% block script %}
+{% include 'components/_script_js.html' %}
+{% endblock script %}

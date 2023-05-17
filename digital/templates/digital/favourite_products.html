@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block baner %}
+{% endblock baner %}
+
+
+{% block main %}
+<div class="content">
+    <div class="container">
+
+        <h2 class="content__title">Мои избранные товары</h2>
+
+        <div class="content__cards list_cards">
+            {% for product in products %}
+            {% include 'digital/components/_content__cards.html' %}
+            {% endfor %}
+
+
+        </div>
+        {% include 'digital/components/_pagination.html' %}
+
+    </div>
+
+
+</div>
+
+
+{% endblock main %}

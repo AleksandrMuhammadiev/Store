@@ -1,0 +1,221 @@
+{% load digital_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'digital/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'digital/css/swiper.css' %}">
+    <link rel="stylesheet" href="{% static 'digital/css/media.css' %}">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+</head>
+
+<body>
+
+<!-- header start -->
+
+<header>
+    <div class="nav__header">
+        <div class="container">
+            <div class="nav_info">
+                <div class="nav_left">
+                    <div class="languege">
+                        <select name="brend" class="filter_lang">
+                            <option value="Samsung"><a href="#" class="lang">Ру</a></option>
+                            <option value="Apple"><a href="#" class="lang">En</a></option>
+                        </select>
+                    </div>
+                    <div class="city">
+                        <select name="brend" class="filter_city">
+                            <option value="Samsung"><a href="#" class="lang">Ташкент</a></option>
+                            <option value="Apple"><a href="#" class="lang">Самарканд</a></option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="nav_right">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Выход</a>
+                    {% else %}
+                    <a href="{% url 'login' %}">Вход</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav_menu_icon container">
+            <div class="nav__top">
+                <a href="{% url 'index' %}" class="logo">
+                    <img src="{% static 'digital/image/logo/logo store 2.svg' %}" alt="">
+                </a>
+                <form action="" method="get" enctype="multipart/form-data">
+                    <label for="s" class="label_search">
+                        <input id="s" type="text" placeholder="Поиск по товарам" class="serch_in">
+                        <button type="submit"><img class="icon_serch"
+                                                   src="{% static 'digital/image/icons/Vector.svg' %}" alt=""></button>
+                    </label>
+                </form>
+                <div class="nav_icon">
+                    <ul class="icon">
+                        <li><a href="{% url 'favourite_products' %}" class="click_icon heart">
+                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.375 5C5.57813 5 2.5 8.07813 2.5 11.875C2.5 18.75 10.625 25 15 26.4538C19.375 25 27.5 18.75 27.5 11.875C27.5 8.07813 24.4219 5 20.625 5C18.3 5 16.2438 6.15438 15 7.92125C14.3661 7.01825 13.5239 6.28131 12.5447 5.77281C11.5656 5.2643 10.4783 4.99922 9.375 5Z"
+                                      stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a></li>
+                        <li><a href="{% url 'cart' %}" class="click_icon"><img
+                                src="{% static 'digital/image/icon_header/bi_cart3 (1).svg' %}" alt=""></a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'profile' request.user.pk %}" class="click_icon"><img
+                                src="{% static 'digital/image/icon_header/Group 522 (1).svg' %}" alt=""></a></li>
+                        {% endif %}
+                        <li class="dropdown">
+                            <a href="#!" class="category_burger"><img
+                                    src="{% static 'digital/image/icons/burger.svg' %}" alt="">
+                            </a>
+                            <div class="dropdown-content">
+                                <ul class="list_burger">
+                                    {% get_categories as categories %}
+                                    {% for category in categories %}
+                                    <li class="burger_list">
+                                        <a href="{{ category.get_absolute_url }}"><img
+                                            src="{{ category.get_image }}" alt=""> <span class="burger_text">{{ category.title }}</span></a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </nav>
+
+
+    <div class="header_nav_menu">
+        <div class="container">
+            <div class="nav__menu">
+                <ul class="nav__category">
+                    {% get_categories as categories %}
+                    {% for category in categories|slice:"5" %}
+                    <li><a href="{{ category.get_absolute_url }}" class="category"><img src="{{ category.get_image }}"
+                                                                                        alt="">
+                        <p class="cat_text">{{ category.title }}</p>
+                    </a></li>
+                    {% endfor %}
+                </ul>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    {% block baner %}
+    {% include 'components/baner.html' %}
+    {% endblock baner %}
+</header>
+<!-- header end -->
+
+
+<!-- Main start -->
+{% block main %}
+
+{% endblock main %}
+<!-- Main end -->
+
+<!-- Footer start -->
+<footer>
+    <div class="footer_info">
+        <div class="container">
+            <div class="footer__block">
+
+                <div class="text_footer">
+                    <h3 class="footer_title">Интернет-магазин</h3>
+                    <ul class="footer_list">
+                        <li><a href="" class="footer_link">О нас</a></li>
+                        <li><a href="" class="footer_link">Адрес магазинов</a></li>
+                        <li><a href="" class="footer_link">Подарочные сертификаты</a></li>
+                        <li><a href="" class="footer_link">Торговые марки</a></li>
+                        <li><a href="" class="footer_link">Каталог</a></li>
+                    </ul>
+                </div>
+                <div class="text_footer">
+                    <h3 class="footer_title">Покупательский сервис</h3>
+                    <ul class="footer_list">
+                        <li><a href="" class="footer_link">Покупка в рассрочку</a></li>
+                        <li><a href="" class="footer_link">Возврат товара</a></li>
+                        <li><a href="" class="footer_link">Гарантия на товары</a></li>
+                        <li><a href="" class="footer_link">Сервисный центр</a></li>
+                    </ul>
+                </div>
+
+                <div class="text_footer">
+                    <h3 class="footer_title">Контакты</h3>
+                    <ul class="footer_list">
+                        <li>
+                            <a href="" class="footer_contact">
+                                <span class="footer_link"> г. Ташкент, Шота Руставели 150</span>
+                                <span class="footer_link">+998 71 200 99 71 </span>
+                                <span class="footer_link">Пн-Вс 9.00 - 18.00</span>
+                            </a>
+                        </li>
+                        <li><a href="" class="footer_link">admin@digitalsrore.uz</a></li>
+                        <li><a href="" class="footer_link">Посмотреть на карте</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="text_footer">
+                    <h3 class="footer_title">Способ оплаты</h3>
+                    <ul class="footer_list_pay">
+                        <li>
+                            <a href="" class="footer_pay">
+                                <img src="{% static 'digital/image/pyment_img/Rectangle 362.png' %}" alt="">
+                            </a>
+                        </li>
+                        <li><a href="" class="footer_pay"><img
+                                src="{% static 'digital/image/pyment_img/Rectangle 363.png' %}" alt=""></a></li>
+                        <li><a href="" class="footer_pay"><img
+                                src="{% static 'digital/image/pyment_img/Rectangle 364.png' %}" alt=""></a></li>
+                        <li><a href="" class="footer_pay"><img
+                                src="{% static 'digital/image/pyment_img/Rectangle 365.png' %}" alt=""></a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</footer>
+
+
+<!-- Footer end -->
+
+{% block script %}
+{% include 'components/_script_js.html' %}
+{% endblock script %}
+
+
+</body>
+
+</html>
