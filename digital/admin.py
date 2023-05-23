@@ -65,7 +65,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ('price', 'quantity')  # то что можно быстро менять в Админке
     list_display_links = ('title',)
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ('title', 'price', 'category')
+    list_filter = ('title', 'price', 'category', 'model_product')
     inlines = [GalleryInline, ParameterInline, CreditInline]
 
     def get_photo(self, obj):  # функция для получения миниатюры картинки в Админке

@@ -24,7 +24,7 @@ def get_favorite_products(user):
 
 @register.simple_tag()
 def get_normal_price(price):
-    return f"{price:_} сум".replace("_", " ")
+    return f"{price:_}".replace("_", " ")
 
 
 @register.simple_tag()

@@ -51,12 +51,12 @@ class CartForAuthenticatedUser:
 
 
     # Метод который будит очищать корзину
-    # def clear(self):
-    #     order = self.get_cart_info()['order']
-    #     order_products = order.orderproduct_set.all()
-    #     for product in order_products:
-    #         product.delete()
-    #     order.save()
+    def clear(self):
+        order = self.get_cart_info()['order']
+        order_products = order.orderproduct_set.all()
+        for product in order_products:
+            product.delete()
+        order.save()
 
 
 # Функция для анонимного пользователя

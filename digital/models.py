@@ -179,6 +179,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, models.SET_NULL, blank=True, null=True)  # если удалиться юзер то обнулится
     first_name = models.CharField(max_length=255, default='', verbose_name='Имя пользователя')
     last_name = models.CharField(max_length=255,default='', verbose_name='Фамилия пользователя')
+    email = models.EmailField(verbose_name='Почта покупателя', blank=True, null=True)
 
     def __str__(self):
         return self.first_name
@@ -221,9 +222,9 @@ class Order(models.Model):
 # ----------------------------------------------------------------------------------------
 # Моделька Заказанных продуктов (строчки товаров)
 class OrderProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name='Продукт')
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
+    quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество')
     addet_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -243,13 +244,14 @@ class OrderProduct(models.Model):
 # ----------------------------------------------------------------------------------------
 # Моделька Адрес доставки
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=255)
-    city = models.ForeignKey('City', on_delete=models.CASCADE, verbose_name='Города')  # City поставили в кавычках так как класс был создан позже
-    state = models.CharField(max_length=255)
-    phone = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, verbose_name='Покупатель')
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, verbose_name='Заказ')
+    address = models.CharField(max_length=255, verbose_name='Адрес')
+    city = models.CharField(max_length=255, verbose_name='Города')  # City поставили в кавычках так как класс был создан позже
+    state = models.CharField(max_length=255, verbose_name='Регион')
+    phone = models.CharField(max_length=255, verbose_name='Номер телефона', blank=True, null=True)
+    comment = models.TextField(verbose_name='Коментарий к заказу', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
 
     def __str__(self):
         return self.address

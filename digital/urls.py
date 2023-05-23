@@ -16,5 +16,9 @@ urlpatterns = [
     path('cart/', cart, name='cart'),
     path('to_cart/<int:product_id>/<str:action>/', to_cart, name='to_cart'),
     path('product_color/<str:model_product>/<str:color>', product_by_color, name='product_color'),
-    path('clear_cart/', clear, name='clear_cart')
+    path('clear_cart/', clear, name='clear_cart'),
+    path('checkout/', checkout, name='checkout'),
+
+    path('payment/', create_checkout_session, name='payment'),
+    path('payment_success/', success_payment, name='success'),
 ]
