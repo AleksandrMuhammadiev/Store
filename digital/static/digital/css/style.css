@@ -623,6 +623,7 @@
 
 .detail_product {
   display: flex;
+  gap: 30px;
 }
 .price_color {
   display: flex;
@@ -1385,9 +1386,6 @@ justify-content: space-between;
   line-height: 150%;
   color: #082040;
 }
-.order_cart_img{
-  height: 106px;
-}
 
 .product_img{
 width: 500px;
@@ -1534,3 +1532,4 @@ width: 500px;
 .count_col{
 font-family: 'Regul';
 }
+

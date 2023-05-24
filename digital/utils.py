@@ -63,7 +63,6 @@ class CartForAuthenticatedUser:
 def get_cart_data(request):
     cart = CartForAuthenticatedUser(request)
     cart_info = cart.get_cart_info()
-
     return {
         'cart_total_quantity': cart_info['cart_total_quantity'],
         'cart_total_price': cart_info['cart_total_price'],

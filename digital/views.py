@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from .models import Product, Category, FavoriteProducts, Profile, Gallery
+from .models import Product, Category, FavoriteProducts, Profile, Gallery, SaveOrder, SaveOrderProducts
 from .forms import LoginForm, RegistrationForm, CreateProfileForm, EditProfileForm, EditAccountForm, CustomerForm, ShippingForm
 from .filters import ProductFilter
 from django.contrib.auth import login, logout, update_session_auth_hash
@@ -358,10 +358,24 @@ def checkout(request):
 #  ---------------------------------------------------------------------------------
 # Функция для проведения оплаты по stripe
 def create_checkout_session(request):
+
     stripe.api_key = settings.STRIPE_SECRET_KEY
     if request.method == 'POST':
         user_cart = CartForAuthenticatedUser(request)  # Рождается класс Корзины
         cart_info = user_cart.get_cart_info()  #  Получаем метод класса что бы получить данные о корзине
+        order = cart_info['order']
+        order_save = SaveOrder.objects.create(customer=order.customer, total_price=order.get_cart_total_price)
+        order_save.save()
+        order_products = order.orderproduct_set.all()
+        for product in order_products:
+            save_order_product = SaveOrderProducts.objects.create(order_id=order_save.pk,
+                                                  product=str(product),
+                                                  quantity=product.quantity,
+                                                  product_price=product.product.price,
+                                                  final_price=product.get_total_price)
+            print('Заказ готов')
+            save_order_product.save()
+
 
         customer_form = CustomerForm(data=request.POST)
         if customer_form.is_valid():
@@ -389,9 +403,7 @@ def create_checkout_session(request):
 
 
         total_price = cart_info['cart_total_price']
-        print(total_price)
         total_quantity = cart_info['cart_total_quantity']
-        print(total_quantity)
         session = stripe.checkout.Session.create(
             line_items=[{
                 'price_data': {
@@ -410,10 +422,10 @@ def create_checkout_session(request):
         return redirect(session.url, 303)
 
 
+
 def success_payment(request):
     user_cart = CartForAuthenticatedUser(request)
     user_cart.clear()
-
     messages.success(request, 'Оплата прошла успешно')
     return render(request, 'digital/success.html')
 

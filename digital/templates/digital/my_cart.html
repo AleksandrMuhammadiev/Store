@@ -28,8 +28,9 @@
             <ul class="list_card_orders ">
                 {% for item in products %}
                 <li class="order  order_cart">
-
+                    <a href="{{ item.product.get_absolute_url }}">
                     <img class="order_cart_img" src="{{ item.product.get_first_photo }}" alt="">
+                    </a>
                     <div class="info_order">
                         <h4 class="product_title">{{ item.product.title }}</h4>
                         <div class="color_quantity">
@@ -67,6 +68,7 @@
                     <p class="product_price_title">Итого</p>
                     <p class="product_price">{% get_normal_price item.get_total_price %}</p>
                     </div>
+
                 </li>
                 {% endfor %}
             </ul>

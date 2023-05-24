@@ -26,6 +26,12 @@ class CreditInline(admin.TabularInline):  # данный класс служит
     model = Credit
     extra = 1
 
+class SaveProductInline(admin.TabularInline):  # данный класс служит как доп параметр для добавления нескольких фото товару
+    fk_name = 'order'
+    model = SaveOrderProducts
+    extra = 1
+
+
 
 # Регистрация модельки категории в Админке
 @admin.register(Category)
@@ -80,6 +86,16 @@ class ProductAdmin(admin.ModelAdmin):
     get_photo.short_description = 'Миниатюра'
 
 
+@admin.register(OrderProduct)
+class OrderProductAdmin(admin.ModelAdmin):
+    list_display = ['product', 'order', 'quantity', 'get_total_price']
+
+@admin.register(SaveOrder)
+class SaveOrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'customer','total_price', 'created_at']
+    inlines = [SaveProductInline]
+
+
 admin.site.register(Gallery)
 admin.site.register(FavoriteProducts)
 admin.site.register(Brand)
@@ -87,8 +103,11 @@ admin.site.register(Profile)
 
 admin.site.register(Customer)
 admin.site.register(Order)
-admin.site.register(OrderProduct)
+
 admin.site.register(ShippingAddress)
 admin.site.register(City)
 admin.site.register(ModelProduct)
+
+
+
 

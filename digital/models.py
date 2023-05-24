@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from colorfield.fields import ColorField
+from django.db.models.signals import post_save
+
 
 # Create your models here.
 
@@ -36,7 +38,8 @@ class Category(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=150, verbose_name='Наименование товара')
-    model_product = models.ForeignKey('ModelProduct', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Модель')
+    model_product = models.ForeignKey('ModelProduct', on_delete=models.CASCADE, null=True, blank=True,
+                                      verbose_name='Модель')
     price = models.FloatField(verbose_name='Цена')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     quantity = models.IntegerField(default=0, verbose_name='В наличии')
@@ -48,7 +51,7 @@ class Product(models.Model):
     color_name = models.CharField(max_length=100, default='Белый', verbose_name='Цвет', blank=True, null=True)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Бренд')
     discount = models.IntegerField(verbose_name='Скидка', blank=True, null=True)
-    memory = models.CharField(max_length=255 ,verbose_name='Пямать', blank=True)
+    memory = models.CharField(max_length=255, verbose_name='Пямать', blank=True)
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
@@ -74,13 +77,9 @@ class Gallery(models.Model):
     image = models.ImageField(upload_to='products/', verbose_name='Изображения')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
 
-
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Галерея товаров'
-
-
-
 
 
 class FavoriteProducts(models.Model):
@@ -95,14 +94,11 @@ class FavoriteProducts(models.Model):
         verbose_name_plural = 'Избранные товары'
 
 
-
-
 class Brand(models.Model):
     title = models.CharField(max_length=150, verbose_name='Наименование Бренда')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True,
                                  verbose_name='Категория',
                                  related_name='brand')
-
 
     def __str__(self):
         return self.title
@@ -111,12 +107,12 @@ class Brand(models.Model):
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренды'
 
+
 class ModelProduct(models.Model):
     title = models.CharField(max_length=150, verbose_name='Наименование модели')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,blank=True, null=True,
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True,
                                  verbose_name='Категория',
                                  related_name='model_product')
-
 
     def __str__(self):
         return self.title
@@ -124,9 +120,6 @@ class ModelProduct(models.Model):
     class Meta:
         verbose_name = 'Модель'
         verbose_name_plural = 'Модели'
-
-
-
 
 
 class ProductDescription(models.Model):
@@ -138,6 +131,7 @@ class ProductDescription(models.Model):
         verbose_name = 'Описание товара'
         verbose_name_plural = 'Описание товаров'
 
+
 class Credit(models.Model):
     from_price = models.IntegerField(default=0, verbose_name='От какой стоимости')
     month = models.IntegerField(default=0, verbose_name='Месяцы')
@@ -148,7 +142,6 @@ class Credit(models.Model):
         verbose_name_plural = 'Товары в рассрочку'
 
 
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
@@ -156,7 +149,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
 
     def get_photo(self):
         try:
@@ -169,25 +161,19 @@ class Profile(models.Model):
         verbose_name_plural = 'Профили'
 
 
-
-
-
-
-
-
 class Customer(models.Model):
     user = models.OneToOneField(User, models.SET_NULL, blank=True, null=True)  # если удалиться юзер то обнулится
     first_name = models.CharField(max_length=255, default='', verbose_name='Имя пользователя')
-    last_name = models.CharField(max_length=255,default='', verbose_name='Фамилия пользователя')
+    last_name = models.CharField(max_length=255, default='', verbose_name='Фамилия пользователя')
     email = models.EmailField(verbose_name='Почта покупателя', blank=True, null=True)
 
     def __str__(self):
         return self.first_name
 
-
     class Meta:
         verbose_name = 'Покупатель'
         verbose_name_plural = 'Покупатели'
+
 
 # ----------------------------------------------------------------------------------------
 # Моделька Заказа
@@ -217,14 +203,13 @@ class Order(models.Model):
         return total_quantity
 
 
-
-
 # ----------------------------------------------------------------------------------------
 # Моделька Заказанных продуктов (строчки товаров)
 class OrderProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name='Продукт')
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, verbose_name='Заказ номер')
     quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество')
+    total_price = models.FloatField(verbose_name='Общая стоимость', default=0)  # на какую стоимость
     addet_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -247,7 +232,8 @@ class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, verbose_name='Покупатель')
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, verbose_name='Заказ')
     address = models.CharField(max_length=255, verbose_name='Адрес')
-    city = models.CharField(max_length=255, verbose_name='Города')  # City поставили в кавычках так как класс был создан позже
+    city = models.CharField(max_length=255,
+                            verbose_name='Города')  # City поставили в кавычках так как класс был создан позже
     state = models.CharField(max_length=255, verbose_name='Регион')
     phone = models.CharField(max_length=255, verbose_name='Номер телефона', blank=True, null=True)
     comment = models.TextField(verbose_name='Коментарий к заказу', blank=True, null=True)
@@ -256,11 +242,9 @@ class ShippingAddress(models.Model):
     def __str__(self):
         return self.address
 
-
     class Meta:
         verbose_name = 'Адрес доставки'
         verbose_name_plural = 'Адреса доставки'
-
 
 
 class City(models.Model):
@@ -269,41 +253,35 @@ class City(models.Model):
     def __str__(self):
         return self.city_name
 
-
     class Meta:
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
 
 
+class SaveOrder(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Покупатель')
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.FloatField(verbose_name='Сумма чека', default=0)  # на какую стоимость
+
+    def __str__(self):
+        return str(self.pk) + ' '
+
+    class Meta:
+        verbose_name = 'История  заказа'
+        verbose_name_plural = 'Истории  заказов'
 
 
+class SaveOrderProducts(models.Model):
+    order = models.ForeignKey(SaveOrder, on_delete=models.SET_NULL, null=True)
+    product = models.CharField(max_length=500, verbose_name='Продукт')
+    quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество')
+    product_price = models.FloatField(verbose_name='Цена')
+    final_price = models.FloatField(verbose_name='Цена то')
+    addet_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.product}'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    class Meta:
+        verbose_name = 'История товаров заказа'
+        verbose_name_plural = 'Истории товаров заказов'
