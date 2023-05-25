@@ -960,10 +960,13 @@
 
 .list_orders{
   display: none;
-  padding: 27px 0;
+   padding: 20px 0;
   border: 1px solid #7787A6;
   border-radius: 10px;
   margin-top: 60px;
+}
+.list_orders hr:last-child{
+    display: none;
 }
 
 
@@ -1042,7 +1045,9 @@
   }
 
   .content_order .list_orders.active{
-    display: block;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
   }
 
   .content_connect{
@@ -1533,3 +1538,12 @@ width: 500px;
 font-family: 'Regul';
 }
 
+.order_price{
+  margin-left: 20px;
+  font-family: 'Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 150%;
+  color: #082040;
+  }

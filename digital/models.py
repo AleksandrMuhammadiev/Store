@@ -272,12 +272,14 @@ class SaveOrder(models.Model):
 
 
 class SaveOrderProducts(models.Model):
-    order = models.ForeignKey(SaveOrder, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(SaveOrder, on_delete=models.CASCADE, null=True, related_name='products')
     product = models.CharField(max_length=500, verbose_name='Продукт')
     quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name='Количество')
     product_price = models.FloatField(verbose_name='Цена')
     final_price = models.FloatField(verbose_name='Цена то')
     addet_at = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to='images/', verbose_name='Изображения')
+    color_name = models.CharField(max_length=100, verbose_name='Цвет', blank=True, null=True)
 
     def __str__(self):
         return f'{self.product}'

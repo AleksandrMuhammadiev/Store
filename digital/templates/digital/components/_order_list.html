@@ -1,14 +1,24 @@
 {% load static %}
+{% load digital_tags %}
+{% for order in orders %}
+<h4 class="order_price">Сумма заказа: {% get_normal_price order.total_price %}</h4>
+{% for item in order.products.all %}
+
 <li class="order">
-    <img src="{% static 'digital//image/goods/Rectangle 356 (2).png' %}" alt="">
+    <img src="{{ item.photo }}" alt="">
     <div class="info_order">
-        <h4 class="product_title">Смартфон Samsung GalaxyA52 White 128Gb</h4>
+        <h4 class="product_title">{{ item.product }}</h4>
         <div class="color_quantity">
-            <div class="color"><p>Цвет:</p> <span>Белый</span></div>
-            <div class="quantity"><p>Кол-во:</p> <span>1</span></div>
+            <div class="color"><p>Цвет:</p> <span>{{ item.color_name }}</span></div>
+            <div class="quantity"><p>Кол-во:</p> <span>{{ item.quantity }}</span></div>
         </div>
     </div>
-    <p class="product_price">3 864 000 сум</p>
+    <p class="product_price">{% get_normal_price item.final_price %}</p>
     <div class="data"><img src="{% static 'digital/image/icons/clarity_date-line.svg' %}" alt="">
-        <span>03.04.2023</span></div>
+        <span>{{ item.addet_at }}</span></div>
 </li>
+{% endfor %}
+
+<hr>
+{% endfor %}
+

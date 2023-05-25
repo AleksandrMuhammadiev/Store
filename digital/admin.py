@@ -103,11 +103,13 @@ admin.site.register(Profile)
 
 admin.site.register(Customer)
 admin.site.register(Order)
-
+# admin.site.register(OrderProduct)
 admin.site.register(ShippingAddress)
 admin.site.register(City)
 admin.site.register(ModelProduct)
 
-
+#
+# admin.site.register(SaveOrder)
+admin.site.register(SaveOrderProducts)
 
 

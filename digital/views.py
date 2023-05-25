@@ -9,13 +9,15 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from .models import Product, Category, FavoriteProducts, Profile, Gallery, SaveOrder, SaveOrderProducts
-from .forms import LoginForm, RegistrationForm, CreateProfileForm, EditProfileForm, EditAccountForm, CustomerForm, ShippingForm
+from .forms import LoginForm, RegistrationForm, CreateProfileForm, EditProfileForm, EditAccountForm, CustomerForm, \
+    ShippingForm
 from .filters import ProductFilter
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib import messages
 from .utils import *
 from shop import settings
 import stripe
+
 
 # Create your views here.
 class ProductList(ListView):
@@ -203,14 +205,13 @@ def register(request):
         return render(request, 'digital/register.html', context)
 
 
-
-
-
 def profile_view(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
+        orders = SaveOrder.objects.filter(customer_id=pk)
         context = {
-            'profile': profile
+            'profile': profile,
+            'orders': orders
         }
         return render(request, 'digital/profile.html', context)
     else:
@@ -231,16 +232,13 @@ def chg_profile_view(request):
         return redirect('login')
 
 
-
-
-
 # Функция для изменения Аккаунта и Профиля
 @login_required
 def edit_account_view(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            form = EditAccountForm(request.POST,  instance=request.user)
-            form2 = EditProfileForm(request.POST, request.FILES,  instance=request.user.profile)
+            form = EditAccountForm(request.POST, instance=request.user)
+            form2 = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
             if form.is_valid() and form2.is_valid():
                 data = form.cleaned_data
                 form2.save()
@@ -283,7 +281,7 @@ def cart(request):
         }
         print(context)
 
-        return render(request, 'digital/my_cart.html',context)
+        return render(request, 'digital/my_cart.html', context)
     else:
         return redirect('login')
 
@@ -299,15 +297,11 @@ def product_by_color(request, model_product, color):
         if p not in data and product != p:
             data.append(p)
 
-
     context = {
         'product': product,
         'products': data
     }
     return render(request, 'digital/product_detail.html', context)
-
-
-
 
 
 def to_cart(request, product_id, action):
@@ -330,7 +324,7 @@ def clear(request):
         quantity = order_product.quantity  # получаю кол-во
         product = order_product.product  # получаю продукты
         order_product.delete()  # удвляю  продукты заказа
-        product.quantity += quantity # продукты их количество влозврящаю в кол-во на склад
+        product.quantity += quantity  # продукты их количество влозврящаю в кол-во на склад
         product.save()  # сохраняю.
     messages.warning(request, 'Корзина очищена')
     return redirect('cart')
@@ -353,29 +347,27 @@ def checkout(request):
     return render(request, 'digital/checkout.html', context)
 
 
-
-
 #  ---------------------------------------------------------------------------------
 # Функция для проведения оплаты по stripe
 def create_checkout_session(request):
-
     stripe.api_key = settings.STRIPE_SECRET_KEY
     if request.method == 'POST':
         user_cart = CartForAuthenticatedUser(request)  # Рождается класс Корзины
-        cart_info = user_cart.get_cart_info()  #  Получаем метод класса что бы получить данные о корзине
+        cart_info = user_cart.get_cart_info()  # Получаем метод класса что бы получить данные о корзине
         order = cart_info['order']
         order_save = SaveOrder.objects.create(customer=order.customer, total_price=order.get_cart_total_price)
         order_save.save()
         order_products = order.orderproduct_set.all()
         for product in order_products:
             save_order_product = SaveOrderProducts.objects.create(order_id=order_save.pk,
-                                                  product=str(product),
-                                                  quantity=product.quantity,
-                                                  product_price=product.product.price,
-                                                  final_price=product.get_total_price)
+                                                                  product=str(product),
+                                                                  quantity=product.quantity,
+                                                                  product_price=product.product.price,
+                                                                  final_price=product.get_total_price,
+                                                                  photo=product.product.get_first_photo(),
+                                                                  color_name=product.product.color_name)
             print('Заказ готов')
             save_order_product.save()
-
 
         customer_form = CustomerForm(data=request.POST)
         if customer_form.is_valid():
@@ -401,14 +393,13 @@ def create_checkout_session(request):
                 messages.error(request, shipping_form.errors[field].as_text())
                 print(shipping_form.errors[field].as_text())
 
-
         total_price = cart_info['cart_total_price']
         total_quantity = cart_info['cart_total_quantity']
         session = stripe.checkout.Session.create(
             line_items=[{
                 'price_data': {
                     'currency': 'usd',
-                    'product_data':{
+                    'product_data': {
                         'name': 'товары с TOTEMBO'
                     },
                     'unit_amount': int(total_price)
@@ -422,7 +413,6 @@ def create_checkout_session(request):
         return redirect(session.url, 303)
 
 
-
 def success_payment(request):
     user_cart = CartForAuthenticatedUser(request)
     user_cart.clear()
@@ -431,14 +421,11 @@ def success_payment(request):
 
 
 
-
-
-
-
-
-
-
-
+# def get_history_orders(request, pk):
+#     orders = SaveOrder.objects.filter(customer_id=pk)
+#     context = {
+#
+#     }
 
 
 
