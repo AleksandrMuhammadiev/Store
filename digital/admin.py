@@ -110,6 +110,6 @@ admin.site.register(ModelProduct)
 
 #
 # admin.site.register(SaveOrder)
-admin.site.register(SaveOrderProducts)
+# admin.site.register(SaveOrderProducts)
 
 
