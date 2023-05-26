@@ -143,3 +143,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_PUBLIC_KEY = 'pk_test_51KniXYAxRYRPHE83bbfdE4ksfdYA2pF8frneghPJUbP2CDE8tiFwzAnS92DVnkvC2hlzGIA0gEShDwXzK3HcRnxe009WCAo7Dc'
 
 STRIPE_SECRET_KEY = "sk_test_51KniXYAxRYRPHE83AnQt699xPMqf2yp8jmPl1qY1WhdG5AW7mFyKqLrGjsakvGO5KWb6VQBhCrXW0w3pq2ChmlGp0027FjhCDL"
+
+
+# Подключение сообщений уведомлений
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+}

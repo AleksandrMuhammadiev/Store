@@ -91,11 +91,12 @@ def save_favorite_product(request, product_slug):
     product = Product.objects.get(slug=product_slug)
     favorite_products = FavoriteProducts.objects.filter(user=user)
     if user:
-        if product in [i.product for i in
-                       favorite_products]:  # собираем все продукты в список,  делам генератором что выводить только продукт без пользователя
+        if product in [i.product for i in favorite_products]:  # собираем все продукты в список,  делам генератором что выводить только продукт без пользователя
             fav_product = FavoriteProducts.objects.get(user=user, product=product)
+            messages.warning(request, 'Товар удалён из избранного')
             fav_product.delete()
         else:
+            messages.success(request, 'Товар добавлен в избранное')
             FavoriteProducts.objects.create(user=user, product=product)
     next_page = request.META.get('HTTP_REFERER', 'index')
     # HTTP_REFERER - это с какой страницы пришёл сигнал и перейдём либо на ту страницу что были или на главную
@@ -153,10 +154,13 @@ def user_login(request):
                 user = form.get_user()
                 if user:
                     login(request, user)
+                    messages.success(request, 'Авторизация прошла успешно')
                     return redirect('index')
                 else:
+                    messages.error(request, 'Не верный логин или пароль')
                     return redirect('login')
             else:
+                messages.error(request, 'Не верный логин или пароль')
                 return redirect('login')
         else:
             form = LoginForm()
@@ -169,6 +173,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
+    messages.success(request, 'Уже уходите ? 😥')
     return redirect('index')
 
 
@@ -187,7 +192,7 @@ def register(request):
                     profile.user = user
                     profile.save()
 
-                    messages.success(request, 'Вы успешно зарешистрированы. Войдите в аккаунт')
+                    messages.success(request, 'Регистрация прошла успешно. Войдите в аккаунт')
                     return redirect('index')
             else:
                 for field in form.errors:
@@ -227,8 +232,10 @@ def chg_profile_view(request):
             'edit_account_form': edit_account_form,
             'edit_profile_form': edit_profile_form
         }
+        messages.success(request, 'Профиль успешно изменён')
         return render(request, 'digital/chg_profile.html', context)
     else:
+        messages.error(request, 'Что то пошло не так')
         return redirect('login')
 
 
@@ -309,6 +316,7 @@ def to_cart(request, product_id, action):
     if request.user.is_authenticated:
         user_cart = CartForAuthenticatedUser(request, product_id, action)
         next_page = request.META.get('HTTP_REFERER', 'index')
+        messages.success(request, 'Продукт добавлен в корзину')
         return redirect(next_page)
     else:
         messages.error(request, 'Авторизуйтесь или зарегистрируйтесь, что бы совершать покупки')
@@ -380,7 +388,6 @@ def create_checkout_session(request):
                 print(shipping_form.errors[field].as_text())
 
         total_price = cart_info['cart_total_price']
-        total_quantity = cart_info['cart_total_quantity']
         session = stripe.checkout.Session.create(
             line_items=[{
                 'price_data': {
@@ -400,25 +407,28 @@ def create_checkout_session(request):
 
 
 def success_payment(request):
-    user_cart = CartForAuthenticatedUser(request)
-    cart_info = user_cart.get_cart_info()  # Получаем метод класса что бы получить данные о корзине
-    order = cart_info['order']
-    order_save = SaveOrder.objects.create(customer=order.customer, total_price=order.get_cart_total_price)
-    order_save.save()
-    order_products = order.orderproduct_set.all()
-    for product in order_products:
-        save_order_product = SaveOrderProducts.objects.create(order_id=order_save.pk,
-                                                              product=str(product),
-                                                              quantity=product.quantity,
-                                                              product_price=product.product.price,
-                                                              final_price=product.get_total_price,
-                                                              photo=product.product.get_first_photo(),
-                                                              color_name=product.product.color_name)
-        print('Заказ готов')
-        save_order_product.save()
-    user_cart.clear()
-    messages.success(request, 'Оплата прошла успешно')
-    return render(request, 'digital/success.html')
+    if request.user.is_authenticated:
+        user_cart = CartForAuthenticatedUser(request)
+        cart_info = user_cart.get_cart_info()  # Получаем метод класса что бы получить данные о корзине
+        order = cart_info['order']
+        order_save = SaveOrder.objects.create(customer=order.customer, total_price=order.get_cart_total_price)
+        order_save.save()
+        order_products = order.orderproduct_set.all()
+        for product in order_products:
+            save_order_product = SaveOrderProducts.objects.create(order_id=order_save.pk,
+                                                                  product=str(product),
+                                                                  quantity=product.quantity,
+                                                                  product_price=product.product.price,
+                                                                  final_price=product.get_total_price,
+                                                                  photo=product.product.get_first_photo(),
+                                                                  color_name=product.product.color_name)
+            print('Заказ готов')
+            save_order_product.save()
+        user_cart.clear()
+        messages.success(request, 'Оплата прошла успешно')
+        return render(request, 'digital/success.html')
+    else:
+        return redirect('index')
 
 
 

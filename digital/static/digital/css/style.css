@@ -1547,3 +1547,30 @@ font-family: 'Regul';
   line-height: 150%;
   color: #082040;
   }
+
+
+.success_title{
+  margin-bottom: 40px;
+  font-family: 'Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 43px;
+  color: #0F2859;
+}
+
+.alert {
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background: #0f2859;
+    text-align: center;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 5px;
+    font-family: "Medium";
+    font-style: normal;
+    font-weight: 500;
+    }
