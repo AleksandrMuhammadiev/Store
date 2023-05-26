@@ -354,20 +354,6 @@ def create_checkout_session(request):
     if request.method == 'POST':
         user_cart = CartForAuthenticatedUser(request)  # Рождается класс Корзины
         cart_info = user_cart.get_cart_info()  # Получаем метод класса что бы получить данные о корзине
-        # order = cart_info['order']
-        # order_save = SaveOrder.objects.create(customer=order.customer, total_price=order.get_cart_total_price)
-        # order_save.save()
-        # order_products = order.orderproduct_set.all()
-        # for product in order_products:
-        #     save_order_product = SaveOrderProducts.objects.create(order_id=order_save.pk,
-        #                                                           product=str(product),
-        #                                                           quantity=product.quantity,
-        #                                                           product_price=product.product.price,
-        #                                                           final_price=product.get_total_price,
-        #                                                           photo=product.product.get_first_photo(),
-        #                                                           color_name=product.product.color_name)
-        #     print('Заказ готов')
-        #     save_order_product.save()
 
         customer_form = CustomerForm(data=request.POST)
         if customer_form.is_valid():
@@ -436,11 +422,7 @@ def success_payment(request):
 
 
 
-# def get_history_orders(request, pk):
-#     orders = SaveOrder.objects.filter(customer_id=pk)
-#     context = {
-#
-#     }
+
 
 
 
