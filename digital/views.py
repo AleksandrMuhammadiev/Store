@@ -193,7 +193,7 @@ def register(request):
                     profile.save()
 
                     messages.success(request, 'Регистрация прошла успешно. Войдите в аккаунт')
-                    return redirect('index')
+                    return redirect('login')
             else:
                 for field in form.errors:
                     messages.error(request, form.errors[field].as_text())
@@ -213,7 +213,9 @@ def register(request):
 def profile_view(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
-        orders = SaveOrder.objects.filter(customer_id=pk)
+        customer = Customer.objects.get(user_id=pk)
+        orders = SaveOrder.objects.filter(customer_id=customer.pk)
+        print('Мои заказы', orders)
         context = {
             'profile': profile,
             'orders': orders

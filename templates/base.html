@@ -20,7 +20,7 @@
 <!-- header start -->
 
 {% for message in messages %}
-    <div class="alert {{ message.tags }}" role="alert">
+    <div class="alert {{ message.tags }}"  id="message" role="alert">
         {{ message }}
     </div>
 {% endfor %}
@@ -221,6 +221,11 @@
 {% include 'components/_script_js.html' %}
 {% endblock script %}
 
+<script>
+setTimeout(function(){
+	document.getElementById('message').style.display = 'none';
+}, 3000);
+</script>
 
 </body>
 

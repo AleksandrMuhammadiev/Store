@@ -140,10 +140,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-STRIPE_PUBLIC_KEY = 'pk_test_51KniXYAxRYRPHE83bbfdE4ksfdYA2pF8frneghPJUbP2CDE8tiFwzAnS92DVnkvC2hlzGIA0gEShDwXzK3HcRnxe009WCAo7Dc'
+STRIPE_PUBLIC_KEY = 'pk_test_51N9SpjGEkmNaXI4AU8reMiJvn7Bni50zZ8lrBV2yXSQcRMAiZUAw17EGnHtnUNY2v85TEr1CzVzThwAYHxxIyyu100bFVCFXyT'
 
-STRIPE_SECRET_KEY = "sk_test_51KniXYAxRYRPHE83AnQt699xPMqf2yp8jmPl1qY1WhdG5AW7mFyKqLrGjsakvGO5KWb6VQBhCrXW0w3pq2ChmlGp0027FjhCDL"
 
+STRIPE_SECRET_KEY = 'sk_test_51N9SpjGEkmNaXI4AXKZ72zq0JwrBQFpGwW7H94A0HXh86TZ33d4WLKBMbzOpPfi2Dt5bg6UgXCGi3nQ1bfJDwQGo00LWi7Qa1O'
 
 # Подключение сообщений уведомлений
 from django.contrib.messages import constants as messages
