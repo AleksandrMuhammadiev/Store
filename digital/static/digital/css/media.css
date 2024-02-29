@@ -7,7 +7,7 @@
   .container{
     max-width: 1000px;
   } */
-  
+
 /* } */
 @media(max-width: 1200px){
   .container{
@@ -30,7 +30,7 @@
   .content__title{
     justify-content: center;
   }
-  
+
   .content{
     margin: 50px 0 50px 0
   }
@@ -63,7 +63,11 @@
   .check{
   margin-bottom: 50px;
   }
-  
+
+  .header_baner{
+    height: 355px;
+  }
+
 }
 
 
@@ -101,31 +105,37 @@
   .nav_right a{
     font-size: 15px;
   }
-  
+
   .filter_lang {
     font-size: 15px;
   }
   .filter_lang option{
     font-size: 15px;
   }
-  
+
   .filter_city{
     font-size: 15px;
   }
-  
+
   .filter_city option{
     font-size: 15px;
   }
-  
+
   .btn_cage2{
     padding: 20px 26px;
   }
-  .btn_cage1 span{
-    padding: 25px 30px;
+  .btn_cage1{
+    padding: 0px 30px;
     font-size: 20px;
+    gap:0;
   }
+
   .product_img img{
     height: 300px;
+    width: 300px;
+  }
+  .product_img{
+      text-align: center;
   }
   .detail_product{
     flex-wrap: wrap;
@@ -138,15 +148,15 @@
   .btn_cage2 span{
     font-size: 20px;
   }
-  
-  
+
+
   .list_left .list_right{
     font-size: 20px;
   }
   .list_right{
     font-size: 20px;
   }
-  
+
   .user_block, .user {
     justify-content: center;
     align-items: center;
@@ -157,7 +167,7 @@
   .lis__user_info{
     align-items: center;
   }
-  
+
   .order img{
     height: 80px;
   }
@@ -180,7 +190,7 @@
   .data span{
     font-size: 13px;
   }
-  
+
   .list_orders{
     padding: 20px 0;
   }
@@ -191,6 +201,25 @@
     justify-content: center;
   }
 
+
+.content__cards{
+    justify-content: center;
+}
+
+  .header_baner{
+    height: 255px;
+   }
+   .banner_text {
+    gap: 40px;
+   }
+   .banner_text p {
+    font-size: 28px;
+    line-height: 32px;
+   }
+   .banner_text h2{
+    font-size: 35px;
+    line-height: 35px;
+   }
 
 }
 
@@ -209,7 +238,7 @@
   .list_button{
     margin-top: 100px;
   }
-  
+
   .product_title {
     width: 190px;
     font-size: 10px;
@@ -231,138 +260,173 @@
     width: 193px;
     padding: 17px 0;
 }
-  
+
 }
 
 
 @media(max-width: 576px){
   .container{
-    max-width: 100%;
-    padding: 0 15px;
+    max-width: 420px;
   }
-  
+
   .nav_right a{
     font-size: 15px;
   }
-  
+
   .icon{
     gap: 30px;
   }
   .footer_list_pay{
     flex-wrap: wrap;
+    justify-content: center;
   }
   .card{
     padding: 38px 15px;
 
   }
 
-  .list_user{
-    width: 380px;
-  }
-  .content_midle_text{
-    width: 380px;
-  }
-  .btn_profile {
-    width: 270px;
-    font-size: 18px;
-  }
-
-.list_user span {
+  .image_good {
+    max-width: 291px;
+}
+.card_title{
+  font-size: 20px;
+  width: 278px;
+}
+.data_price{
+  font-style: 20px;
+}
+.btn_card {
+  width: 237px;
+  height: 60px;
+  gap: 32px;
+}
+.content__description{
   font-size: 15px;
 }
-.list_user p{
+.footer_title{
   font-size: 15px;
 }
-.order{
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
+.footer_list{
+  width: 300px;
+  gap: 20px;
+}
+.footer_link{
+  font-size: 11px;
 }
 
-.login {
-  padding: 25px
+.nav_left{
+  gap: 24px;
 }
-.login_content{
-  justify-content: center;
+.filter_lang{
+  font-size: 11px;
 }
-.btn-to_register {
-  width: 260px;
+.filter_city{
+  font-size: 11px;
 }
-.block_input{
-    flex-wrap: wrap;
+.logo img{
+  width: 130px;
+}
+.click_icon img{
+  width: 20px;
 }
 .icon{
- gap: 23px;
+  gap: 18px;
 }
 
-.click_icon img{
-    width: 20px;
-    height: 20px;
+.nav_right a{
+  font-size: 12px;
 }
-.heart svg{
-width: 20px;
-    height: 20px;
+.nav__top{
+  height: 60px;
 }
-
-.logo img{
- width: 160px;
+.category_burger{
+  height: 45px;
 }
 
-.address_title {
+.header_baner{
+    height: 185px;
+}
+
+.banner_text{
+    gap:23px;
+}
+.banner_text p{
+    font-size: 10px;
+    line-height: 4px;
+}
+.banner_text h2{
+    font-size: 17px;
+    line-height: 5px;
+}
+.image_good {
+    max-width: 250px;
+    height: 200px;
+}
+
+.login_form input{
+    width: 309px;
+    font-size: 12px;
+    padding: 7px 0 13px 8px;
+}
+.btn-login{
+    width: 160px;
+    padding: 10px 0;
+}
+.btn-to_register{
+    width: 236px;
+    padding: 15px 0;
+}
+.longin_info{
+    padding: 12px;
+}
+.first_visit{
     font-size: 20px;
-    margin-bottom: 0;
-}
-.pay_title {
-    font-size: 16px;
 }
 
-.count_price{
-    font-size: 13px;
-    line-height: 17px;
+.longin_info p, .register_info p{
+        font-size: 13px;
+        margin: 33px 0 50px 0;
+        width: 332px;
 }
-.count_price p{
-    width: 150px;
-}
-.checkout_title{
-    font-size: 30px;
-    line-height: 18px;
-    margin-bottom: 50px;
-}
-
-.card {
-    padding: 38px 10px;
-}
-
-.btn_order {
-    font-size: 14px;
-    margin-top: 25px;
-}
-
-
-
-.product_price_title, .data_add{
-line-height: 100%;
-font-size: 12px;
-}
-
-.quantity a img {
-    width: 10px;
-    height: 7px;
-}
-.total_products_price{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.total_products_price span {
-font-size: 15px;
 
 }
 
-.total_products_price{
-font-size: 17px;
+@media(max-width: 420px){
+  .container{
+    max-width: 320px;
+  }
+  .image_good {
+    max-width: 250px;
+    height: 200px;
+}
+.card_title{
+  font-size: 20px;
+  width: 278px;
+}
+.data_price{
+  font-size: 20px;
+}
+.btn_card {
+  width: 237px;
+  height: 60px;
+  gap: 32px;
+}
+.content__description{
+  font-style: 15px;
+}
+.footer_title{
+  font-style: 15px;
+}
+.footer_list{
+  width: 300px;
+  gap: 20px;
+}
+.footer_link{
+  font-style: 11px;
 }
 
+.header_baner {
+  height: 155px;
+}
 
 }
